@@ -1,0 +1,267 @@
+rw-rw---- 1 mysql mysql   35 Apr  9 20:00 slow_log.CSM
+[in00876z@dfrxwebn5 mysql]$ cd ..
+[in00876z@dfrxwebn5 retail]$ cd /schneider/exploit/mysql/pl/
+[in00876z@dfrxwebn5 pl]$ ls -ltrh
+total 76K
+-rwxr-xr-x 1 mysql mysql 1.1K Oct 22  2010 libmysql.pm
+-rwxrwxr-x 1 mysql mysql  23K Oct 26  2012 all.mysql.linux.pl_old
+-rwxrwxrwx 1 mysql mysql  23K Nov  8  2012 all.mysql.linux.pl
+-rwxr-xr-x 1 mysql mysql  441 Jul 16  2014 check_mysql.linux.pl
+-rwxr-xr-x 1 mysql mysql 5.9K Jul 16  2014 start.mysql.linux.pl
+-rwxr-xr-x 1 mysql mysql 5.5K Aug  1  2014 stop.mysql.linux.pl
+-rwxr-xr-x 1 mysql mysql 2.0K Oct 23  2014 backup_dump.pl
+[in00876z@dfrxwebn5 pl]$ perl check_mysql.linux.pl retail
+WARNING: Log file disabled. Maybe directory or file isn't writable?
+mysqld_multi log file version 2.16; run: Wed Apr 10 14:46:23 2019
+Reporting MySQL servers
+MySQL server from group: mysqld1 is running
+[in00876z@dfrxwebn5 pl]$ ps -ef  |grep mysql
+root       9192      1  0 Apr07 ?        00:00:16 /opt/IBM/ITM/lx8266/se/bin/kse
+root       9207   9192  0 Apr07 ?        00:01:23 java -Djava.class.path=/opt/IBM/ITM/lx8266/se/jars/cpci.jar -DAGENT_REF_FILE=/opt/IBM/ITM/lx8266/se/bin/kse.reTM mysqld1 KSE
+mysql     12246      1  0 Apr07 ?        00:01:52 /usr/libexec/mysqld --datadir=b_data_home_dir=/dbfs/mysql/retail/ --innodb_data_file_path=mysql_system_tbs_1:1cache=64 --sort_buffer_size=512K --net_buffer_length=8K --read_buffer_size=256K db_file_per_table --innodb_open_files=100 --innodb_buffer_pool_size=8M --innodb_-server-id=1
+in00876z 105514 103478  0 14:50 pts/0    00:00:00 grep mysql
+[in00876z@dfrxwebn5 pl]$ mysql -uroot -p -S /tmp/mysql.retail.sock
+Enter password:
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 6
+Server version: 5.5.38 MySQL Community Server (GPL) by Remi
+
+Copyright (c) 2000, 2014, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> select version();
++-----------+
+| version() |
++-----------+
+| 5.5.38    |
++-----------+
+1 row in set (0.00 sec)
+
+mysql> show databases;
++----------------------------+
+| Database                   |
++----------------------------+
+| information_schema         |
+| innodb_binlogs             |
+| mysql                      |
+| performance_schema         |
+| schneider-ecobuilding      |
+| schneider-ecobuilding-2016 |
+| schneider-energy-2016      |
+| schneider-partners         |
+| schneider-partners-2016    |
+| schneider-retail           |
+| schneider-retail-2016      |
+| test                       |
++----------------------------+
+12 rows in set (0.00 sec)
+
+mysql> use schneider-retail
+Database changed
+mysql> show full processlist;
++----+------+-----------+------------------+---------+------+-------+-----------
+| Id | User | Host      | db               | Command | Time | State | Info
++----+------+-----------+------------------+---------+------+-------+-----------
+|  6 | root | localhost | schneider-retail | Query   |    0 | NULL  | show full
++----+------+-----------+------------------+---------+------+-------+-----------
+1 row in set (0.00 sec)
+
+mysql> use schneider-ecobuilding
+Database changed
+mysql> show full processlist;
++----+------+-----------+-----------------------+---------+------+-------+------
+| Id | User | Host      | db                    | Command | Time | State | Info
++----+------+-----------+-----------------------+---------+------+-------+------
+|  6 | root | localhost | schneider-ecobuilding | Query   |    0 | NULL  | show
++----+------+-----------+-----------------------+---------+------+-------+------
+1 row in set (0.00 sec)
+
+mysql> show full processlist;
++----+------+-----------+-----------------------+---------+------+-------+------
+| Id | User | Host      | db                    | Command | Time | State | Info
++----+------+-----------+-----------------------+---------+------+-------+------
+|  6 | root | localhost | schneider-ecobuilding | Query   |    0 | NULL  | show
++----+------+-----------+-----------------------+---------+------+-------+------
+1 row in set (0.00 sec)
+
+mysql> show tables;
++---------------------------------------------+
+| Tables_in_schneider-ecobuilding             |
++---------------------------------------------+
+| s_eco_bms_pricing                           |
+| s_eco_boost_business_ecoxpert               |
+| s_eco_boost_business_through_field_services |
+| s_eco_boost_direct_business                 |
+| s_eco_boost_for_healthcare                  |
+| s_eco_country                               |
+| s_eco_country_organization                  |
+| s_eco_cross_selling_divisions               |
+| s_eco_cross_selling_partners                |
+| s_eco_cross_selling_retail                  |
+| s_eco_date_order                            |
+| s_eco_pdf                                   |
+| s_eco_prescription                          |
+| s_eco_user                                  |
++---------------------------------------------+
+14 rows in set (0.00 sec)
+
+mysql> select * from s_eco_country limit 6;
++-----------+-----------+-----------+
+| idCountry | country   | continent |
++-----------+-----------+-----------+
+|         1 | us        | americas  |
+|         2 | canada    | americas  |
+|         4 | mexico    | americas  |
+|         5 | chile     | americas  |
+|         6 | colombia  | americas  |
+|         7 | australia | apac      |
++-----------+-----------+-----------+
+6 rows in set (0.00 sec)
+
+mysql> use mysql
+Database changed
+mysql> show tables;
++---------------------------+
+| Tables_in_mysql           |
++---------------------------+
+| backup_history            |
+| backup_progress           |
+| columns_priv              |
+| db                        |
+| event                     |
+| func                      |
+| general_log               |
+| help_category             |
+| help_keyword              |
+| help_relation             |
+| help_topic                |
+| host                      |
+| ndb_binlog_index          |
+| plugin                    |
+| proc                      |
+| procs_priv                |
+| proxies_priv              |
+| servers                   |
+| slow_log                  |
+| tables_priv               |
+| time_zone                 |
+| time_zone_leap_second     |
+| time_zone_name            |
+| time_zone_transition      |
+| time_zone_transition_type |
+| user                      |
++---------------------------+
+26 rows in set (0.00 sec)
+
+SELECT DATABASE();
+show engines;
+
+mysql> select * from user where username=root;
+ERROR 1054 (42S22): Unknown column 'username' in 'where clause'
+mysql> select * from user where username='root';
+ERROR 1054 (42S22): Unknown column 'username' in 'where clause'
+mysql> select * from user where user='root';
++-----------+------+-------------------------------------------+-------------+------+------------+-----------------+------------+------------+--------------+--------+----------------+---------------------+--------------------+----------------------+-------------+-----------------+----------------------+--------+-------
+| Host      | User | Password                                  | Select_priv | Iriv | Grant_priv | References_priv | Index_priv | Alter_priv | Show_db_priv | Supriv | Show_view_priv | Create_routine_priv | Alter_routine_priv | Create_user_pestions | max_updates | max_connections | max_user_connections | plugin | authen
++-----------+------+-------------------------------------------+-------------+------+------------+-----------------+------------+------------+--------------+--------+----------------+---------------------+--------------------+----------------------+-------------+-----------------+----------------------+--------+-------
+| localhost | root | *D83D4673BB4CB13F4AE6255A00A71AA1A3CFE6B6 | Y           | Y    | Y          | Y               | Y          | Y          | Y            | Y      | Y              | Y                   | Y                  | Y                  0 |           0 |               0 |                    0 |        |
+| dfrxwebn5 | root | *D83D4673BB4CB13F4AE6255A00A71AA1A3CFE6B6 | Y           | Y    | Y          | Y               | Y          | Y          | Y            | Y      | Y              | Y                   | Y                  | Y                  0 |           0 |               0 |                    0 |        |
++-----------+------+-------------------------------------------+-------------+------+------------+-----------------+------------+------------+--------------+--------+----------------+---------------------+--------------------+----------------------+-------------+-----------------+----------------------+--------+-------
+2 rows in set (0.00 sec)
+
+mysql> select * from user;
++-----------+-----------+-------------------------------------------+--------------------+------------+-----------------+------------+------------+-----------------------+----------------+---------------------+--------------------+----------------------+-------------+-----------------+----------------------+--------+--
+| Host      | User      | Password                                  | Select_priile_priv | Grant_priv | References_priv | Index_priv | Alter_priv | Show_db_privview_priv | Show_view_priv | Create_routine_priv | Alter_routine_priv | Create_uax_questions | max_updates | max_connections | max_user_connections | plugin | a
++-----------+-----------+-------------------------------------------+--------------------+------------+-----------------+------------+------------+-----------------------+----------------+---------------------+--------------------+----------------------+-------------+-----------------+----------------------+--------+--
+| localhost | root      | *D83D4673BB4CB13F4AE6255A00A71AA1A3CFE6B6 | Y                  | Y          | Y               | Y          | Y          | Y                     | Y              | Y                   | Y          
+***********************************************
+
+Export
+--------
+https://www.tutorialspoint.com/mysql/mysql-database-import.htm
+
+1st method
+----------
+mysql> SELECT * FROM tutorials_tbl 
+   -> INTO OUTFILE '/tmp/tutorials.txt';
+mysql> SELECT * FROM passwd INTO OUTFILE '/tmp/tutorials.txt'
+   -> FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+   -> LINES TERMINATED BY '\r\n';
+You must have the MySQL FILE privilege to execute the SELECT ... INTO statement.
+
+2nd method
+----------
+$ mysqldump -u root -p --no-create-info \
+   --tab=/tmp tutorials tutorials_tbl
+password ******
+
+To export a table in SQL format to a file, use the command shown below.
+$ mysqldump -u root -p TUTORIALS tutorials_tbl > dump.txt
+password ******
+
+To dump an entire database, don't name any tables after the database 
+$ mysqldump -u root -p TUTORIALS > database_dump.txt
+password ******
+
+To back up all the databases available on your host, use the following code.
+$ mysqldump -u root -p --all-databases > database_dump.txt
+password **
+
+Copying Tables or Databases to Another Host
+$ mysqldump -u root -p database_name table_name > dump.txt
+password *
+ftp dump.txt file on another host 
+$ mysql -u root -p database_name < dump.txt
+password *****
+
+Another way to accomplish this without using an intermediary file is to send the output of the mysqldump directly over the network to the remote MySQL server. 
+If you can connect to both the servers from the host where the source database resides, use the following command (Make sure you have access on both the servers).
+
+$ mysqldump -u root -p database_name \
+   | mysql -h other-host.com database_name
+
+Import
+-------
+1st method
+----------
+Importing Data with LOAD DATA
+mysql> LOAD DATA LOCAL INFILE 'dump.txt' INTO TABLE mytbl;
+If the LOCAL keyword is not present, MySQL looks for the datafile on the server host using the looking into absolute pathname, which fully specifies the location of the file, beginning from the root of the filesystem. MySQL reads the file from the given location.
+By default, LOAD DATA assumes that datafiles contain lines that are terminated by linefeeds (newlines) and that data values within a line are separated by tabs.
+To specify a file format explicitly, use a FIELDS clause to describe the characteristics of fields within a line, and a LINES clause to specify the line-ending sequence. The following LOAD DATA statement specifies that the datafile contains values separated by colons and lines terminated by carriage returns and new line character.
+
+mysql> LOAD DATA LOCAL INFILE 'dump.txt' INTO TABLE mytbl
+   -> FIELDS TERMINATED BY ':'
+   -> LINES TERMINATED BY '\r\n';
+The LOAD DATA command assumes the columns in the datafile have the same order as the columns in the table. If that is not true, you can specify a list to indicate which table columns the datafile columns should be loaded into. Suppose your table has columns a, b, and c, but successive columns in the datafile correspond to columns b, c, and a.
+You can load the file as shown in the following code block.
+
+mysql> LOAD DATA LOCAL INFILE 'dump.txt' 
+   -> INTO TABLE mytbl (b, c, a);
+
+2nd method
+----------
+Importing Data with mysqlimport
+MySQL also includes a utility program named mysqlimport that acts as a wrapper around LOAD DATA, so that you can load the input files directly from the command line.
+
+To load data from the dump.txt into mytbl, use the following command at the UNIX prompt.
+
+$ mysqlimport -u root -p --local database_name dump.txt
+password *****
+If you use mysqlimport, command-line options provide the format specifiers. The mysqlimport commands that correspond to the preceding two LOAD DATA statements looks as shown in the following code block.
+
+$ mysqlimport -u root -p --local --fields-terminated-by = ":" \
+   --lines-terminated-by = "\r\n"  database_name dump.txt
+password *****
+The mysqlimport statement uses the --columns option to specify the column order −
+
+$ mysqlimport -u root -p --local --columns=b,c,a \
+   database_name dump.txt
+password ****
+
+

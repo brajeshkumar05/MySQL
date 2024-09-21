@@ -1,0 +1,412 @@
+Download MySQL from 
+https://dev.mysql.com/downloads/file/?id=512064
+
+To download python
+https://www.python.org/downloads/
+
+MariaDB has the following system databases:
+
+mysql is for internal use only, and should not be read or written directly.
+information_schema contains all information that can be found in SQL Server's information_schema and more. However, while SQL Server's information_schema is a schema containing information about the local database, MariaDB's information_schema is a database that contains information about all databases.
+performance_schema contains information about MariaDB runtime. It is disabled by default. Enabling it requires setting the performance_schema system variable to 1 and restarting MariaDB.
+
+To change root password
+-----------------------
+mysqladmin -u root -p password newpass
+mysqladmin -u root -pOld_Password password 'New_Password'
+mysqladmin -u root -proot123 password 'mysql123'
+
+To check MySQL Server is running?
+-------------------------------
+C:\Program Files\MySQL\MySQL Server 8.0\bin>mysqladmin -u root -p ping
+Enter password: *******
+mysqld is alive
+
+To Check which MySQL version I am running?
+------------------------
+mysqladmin --help
+
+C:\Program Files\MySQL\MySQL Server 8.0\bin>mysqladmin -u root -p version
+Enter password: *******
+mysqladmin  Ver 8.0.30 for Win64 on x86_64 (MySQL Community Server - GPL)
+Copyright (c) 2000, 2022, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Server version          8.0.30
+Protocol version        10
+Connection              localhost via TCP/IP
+TCP port                3306
+Uptime:                 3 hours 18 min 48 sec
+
+Threads: 2  Questions: 54  Slow queries: 0  Opens: 215  Flush tables: 3  Open tables: 131  Queries per second avg: 0.004
+
+Find out current Status of MySQL server?
+---------------------------------------
+C:\Program Files\MySQL\MySQL Server 8.0\bin>mysqladmin -u root -p status
+Enter password: *******
+Uptime: 12213  Threads: 2  Questions: 58  Slow queries: 0  Opens: 215  Flush tables: 3  Open tables: 131  Queries per second avg: 0.004
+
+check all the running Process of MySQL server?
+-------------------------------------
+C:\Program Files\MySQL\MySQL Server 8.0\bin>mysqladmin -u root -p processlist
+Enter password: *******
++----+-----------------+-----------------+----+---------+-------+------------------------+------------------+
+| Id | User            | Host            | db | Command | Time  | State                  | Info             |
++----+-----------------+-----------------+----+---------+-------+------------------------+------------------+
+| 5  | event_scheduler | localhost       |    | Daemon  | 12354 | Waiting on empty queue |                  |
+| 22 | root            | localhost:60603 |    | Query   | 0     | init                   | show processlist |
++----+-----------------+-----------------+----+---------+-------+------------------------+------------------+
+
+shutdown MySQL server Safely?
+-----------------------
+C:\Program Files\MySQL\MySQL Server 8.0\bin>mysqladmin -u root -p shutdown
+Enter password: *******
+
+start/stop MySQL server
+---------------------------
+C:\> "C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld"
+# /etc/init.d/mysqld stop
+# /etc/init.d/mysqld start
+
+C:\Program Files\MySQL\MySQL Server 8.0\bin>mysqladmin -u root -p
+mysqladmin  Ver 8.0.30 for Win64 on x86_64 (MySQL Community Server - GPL)
+Copyright (c) 2000, 2022, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Administration program for the mysqld daemon.
+Usage: mysqladmin [OPTIONS] command command....
+  --bind-address=name IP address to bind to.
+  -c, --count=#       Number of iterations to make. This works with -i
+                      (--sleep) only.
+  -#, --debug[=#]     This is a non-debug version. Catch this and exit.
+  --debug-check       This is a non-debug version. Catch this and exit.
+  --debug-info        This is a non-debug version. Catch this and exit.
+  -f, --force         Don't ask for confirmation on drop database; with
+                      multiple commands, continue even if an error occurs.
+  -C, --compress      Use compression in server/client protocol.
+  --character-sets-dir=name
+                      Directory for character set files.
+  --default-character-set=name
+                      Set the default character set.
+  -?, --help          Display this help and exit.
+  -h, --host=name     Connect to host.
+  -b, --no-beep       Turn off beep on error.
+  -p, --password[=name]
+                      Password to use when connecting to server. If password is
+                      not given it's asked from the tty.
+  -,, --password1[=name]
+                      Password for first factor authentication plugin.
+  -,, --password2[=name]
+                      Password for second factor authentication plugin.
+  -,, --password3[=name]
+                      Password for third factor authentication plugin.
+  -W, --pipe          Use named pipes to connect to server.
+  -P, --port=#        Port number to use for connection or 0 for default to, in
+                      order of preference, my.cnf, $MYSQL_TCP_PORT,
+                      /etc/services, built-in default (3306).
+  --protocol=name     The protocol to use for connection (tcp, socket, pipe,
+                      memory).
+  -r, --relative      Show difference between current and previous values when
+                      used with -i. Currently only works with extended-status.
+  --shared-memory-base-name=name
+                      Base name of shared memory.
+  -s, --silent        Silently exit if one can't connect to server.
+  -S, --socket=name   The socket file to use for connection.
+  -i, --sleep=#       Execute commands repeatedly with a sleep between.
+  --ssl-mode=name     SSL connection mode.
+  --ssl-ca=name       CA file in PEM format.
+  --ssl-capath=name   CA directory.
+  --ssl-cert=name     X509 cert in PEM format.
+  --ssl-cipher=name   SSL cipher to use.
+  --ssl-key=name      X509 key in PEM format.
+  --ssl-crl=name      Certificate revocation list.
+  --ssl-crlpath=name  Certificate revocation list path.
+  --tls-version=name  TLS version to use, permitted values are: TLSv1.2,
+                      TLSv1.3
+  --ssl-fips-mode=name
+                      SSL FIPS mode (applies only for OpenSSL); permitted
+                      values are: OFF, ON, STRICT
+  --tls-ciphersuites=name
+                      TLS v1.3 cipher to use.
+  --ssl-session-data=name
+                      Session data file to use to enable ssl session reuse
+  --ssl-session-data-continue-on-failed-reuse
+                      If set to ON, this option will allow connection to
+                      succeed even if session data cannot be reused.
+  --server-public-key-path=name
+                      File path to the server public RSA key in PEM format.
+  --get-server-public-key
+                      Get server public key
+  -u, --user=name     User for login if not current user.
+  -v, --verbose       Write more information.
+  -V, --version       Output version information and exit.
+  -E, --vertical      Print output vertically. Is similar to --relative, but
+                      prints output vertically.
+  -w, --wait[=#]      Wait and retry if connection is down.
+  --connect-timeout=#
+  --shutdown-timeout=#
+  --plugin-dir=name   Directory for client-side plugins.
+  --default-auth=name Default authentication client-side plugin to use.
+  --enable-cleartext-plugin
+                      Enable/disable the clear text authentication plugin.
+  --show-warnings     Show warnings after execution
+  --compression-algorithms=name
+                      Use compression algorithm in server/client protocol.
+                      Valid values are any combination of
+                      'zstd','zlib','uncompressed'.
+  --zstd-compression-level=#
+                      Use this compression level in the client/server protocol,
+                      in case --compression-algorithms=zstd. Valid range is
+                      between 1 and 22, inclusive. Default is 3.
+
+Variables (--variable-name=value)
+and boolean options {FALSE|TRUE}          Value (after reading options)
+----------------------------------------- --------------------------------
+bind-address                              (No default value)
+count                                     0
+force                                     FALSE
+compress                                  FALSE
+character-sets-dir                        (No default value)
+default-character-set                     auto
+host                                      (No default value)
+no-beep                                   FALSE
+port                                      0
+relative                                  FALSE
+shared-memory-base-name                   (No default value)
+socket                                    (No default value)
+sleep                                     0
+ssl-ca                                    (No default value)
+ssl-capath                                (No default value)
+ssl-cert                                  (No default value)
+ssl-cipher                                (No default value)
+ssl-key                                   (No default value)
+ssl-crl                                   (No default value)
+ssl-crlpath                               (No default value)
+tls-version                               (No default value)
+tls-ciphersuites                          (No default value)
+ssl-session-data                          (No default value)
+ssl-session-data-continue-on-failed-reuse FALSE
+server-public-key-path                    (No default value)
+get-server-public-key                     FALSE
+user                                      root
+verbose                                   FALSE
+vertical                                  FALSE
+connect-timeout                           43200
+shutdown-timeout                          3600
+plugin-dir                                (No default value)
+default-auth                              (No default value)
+enable-cleartext-plugin                   FALSE
+show-warnings                             FALSE
+compression-algorithms                    (No default value)
+zstd-compression-level                    3
+
+Default options are read from the following files in the given order:
+C:\Windows\my.ini C:\Windows\my.cnf C:\my.ini C:\my.cnf C:\Program Files\MySQL\MySQL Server 8.0\my.ini C:\Program Files\MySQL\MySQL Server 8.0\my.cnf
+The following groups are read: mysqladmin client
+The following options may be given as the first argument:
+--print-defaults        Print the program argument list and exit.
+--no-defaults           Don't read default options from any option file,
+                        except for login file.
+--defaults-file=#       Only read default options from the given file #.
+--defaults-extra-file=# Read this file after the global files are read.
+--defaults-group-suffix=#
+                        Also read groups with concat(group, suffix)
+--login-path=#          Read this path from the login file.
+
+Where command is a one or more of: (Commands may be shortened)
+  create databasename   Create a new database
+  debug                 Instruct server to write debug information to log
+  drop databasename     Delete a database and all its tables
+  extended-status       Gives an extended status message from the server
+  flush-hosts           Flush all cached hosts
+  flush-logs            Flush all logs
+  flush-status          Clear status variables
+  flush-tables          Flush all tables
+  flush-threads         Flush the thread cache
+  flush-privileges      Reload grant tables (same as reload)
+  kill id,id,...        Kill mysql threads
+  password [new-password] Change old password to new-password in current format
+  ping                  Check if mysqld is alive
+  processlist           Show list of active threads in server
+  reload                Reload grant tables
+  refresh               Flush all tables and close and open logfiles
+  shutdown              Take server down
+  status                Gives a short status message from the server
+  start-replica         Start replication
+  start-slave           Deprecated: use start-replica instead
+  stop-replica          Stop replication
+  stop-slave            Deprecated: use stop-replica instead
+  variables             Prints variables available
+  version               Get version info from server
+
+kill Sleeping MySQL Client Process?
+----------------------------------
+mysqladmin -u root -p processlist
+mysqladmin -u root -p kill 5
+mysqladmin -u root -p kill 5,10
+
+run multiple mysqladmin commands together?
+---------------------------
+mysqladmin  -u root -p processlist status version
+mysqladmin  -u root -p pro stat ver - we can use short form
+
+To connect remote MySQL server
+------------------------------
+mysqladmin  -h 172.16.25.126 -u root -p
+
+execute command on remote MySQL server
+--------------
+mysqladmin  -h 172.16.25.126 -u root -p status
+
+to start/stop MySQL replication on a slave server?
+---------------------
+mysqld -->in windows
+mysqladmin  -u root -p start-slave
+mysqladmin  -u root -p stop-slave
+
+/etc/init.d/mysqld stop
+/etc/init.d/mysqld start
+
+The reload command tells MySQL server to reload the grant tables and refresh command flushes all tables and log files.
+mysqladmin -u root -p reload
+mysqladmin -u root -p refresh
+
+-----------------------------------------------------------------root password - root123-------------------
+C:\Program Files\MySQL\MySQL Server 8.0\bin> mysql -u root -p
+Enter password: *******
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 13
+Server version: 8.0.30 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2022, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql>show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+4 rows in set (0.03 sec)
+
+mysql> use mysql;
+Database changed
+mysql> show tables;
+
+mysql> SELECT host, user FROM user;
++-----------+------------------+
+| host      | user             |
++-----------+------------------+
+| localhost | mysql.infoschema |
+| localhost | mysql.session    |
+| localhost | mysql.sys        |
+| localhost | root             |
++-----------+------------------+
+4 rows in set (0.00 sec)
+
+mysql> select @@datadir;
++---------------------------------------------+
+| @@datadir                                   |
++---------------------------------------------+
+| C:\ProgramData\MySQL\MySQL Server 8.0\Data\ |
++---------------------------------------------+
+1 row in set (0.00 sec)
+
+Check DB size
+-------------
+select table_schema "Database Name", round(sum( data_length + index_length )/1024/1024,2) as "Database size in MB"
+from information_schema.tables group by table_schema;
+
+mysql> SELECT DATABASE();
++------------+
+| DATABASE() |
++------------+
+| db1        |
++------------+
+1 row in set (0.00 sec)
+
+SELECT USER();
+
+mysql>  Select current_user();
++----------------+
+| current_user() |
++----------------+
+| root@localhost |
++----------------+
+1 row in set (0.00 sec)
+
+mysql> select host,user from mysql.user;
++-----------+------------------+
+| host      | user             |
++-----------+------------------+
+| localhost | mysql.infoschema |
+| localhost | mysql.session    |
+| localhost | mysql.sys        |
+| localhost | root             |
++-----------+------------------+
+4 rows in set (0.00 sec)
+
+mysql> create user 'backupuser'@'*' identified by 'backupuser';
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> SHOW GRANTS FOR backupuser;
+ERROR 1141 (42000): There is no such grant defined for user 'backupuser' on host '%'
+
+grant select,show view, reload, replication client, event, trigger on *.* to 'backupuser'@'*';
+grant lock tables on *.* to 'backupuser'@'*';
+
+mysql> flush privileges;
+Query OK, 0 rows affected (0.06 sec)
+
+
+/usr/local/mysql/bin/mysql -uroot -psaoirse -e "SELECT VERSION()"
+mysql -uroot -proot < 1.sql
+SHOW TABLES FROM test;
+SELECT VERSION(); SELECT PI();
+The \W command (upper case) causes server warnings to be shown in the command line along with fatal errors. The \w causes warnings to be hidden, but errors will still appear. 
+system ls /usr/local/mysql/lib/plugin/
+\! ls /usr/local/mysql/lib/plugin/
+SHOW CREATE TABLE example \G
+SHOW COLUMNS FROM <table_name>
+SHOW KEYS FROM <table_name> 
+SET @@autocommit = OFF;
+
+Slow queries
+-------------
+SHOW GLOBAL VARIABLES LIKE '%SLOW_QUERY%';
+SET GLOBAL SLOW_QUERY_LOG=1;
+
+SHOW GLOBAL VARIABLES LIKE '%LONG_QUERY%';
+SET GLOBAL LONG_QUERY_TIME=1;
+
+explain select * from emp;
+
+SHOW PROCESSLIST\G;
+SHOW EXPLAIN FOR 81(this is id)\G;
+
+https://mariadb.com/kb/en/list-of-performance-schema-tables/
+
+select @@global.max_connections;
+SET GLOBAL max_connections=1000;
+
+To get your database, index, and table sizes, run the following command:
+-------------
+SELECT TABLE_SCHEMA,ENGINE,SUM(TABLE_ROWS),SUM(DATA_LENGTH),SUM(INDEX_LENGTH) FROM INFORMATION_SCHEMA.TABLES GROUP BY ENGINE,TABLE_SCHEMA ORDER BY TABLE_SCHEMA;
+
+Pool size and statistics
+---------------------------
+SHOW engine innodb STATUS\G;

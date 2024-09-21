@@ -1,0 +1,34 @@
+MySQL Architecture
+-------------------
+Connectors
+ Native C API, JDBC, ODBC, .NET, PHP, Python, Perl, Ruby, VB
+
+MySQL Server
+ Connection Pool - Authentication-Thread Reuse - Connection Limits - Check Memory - Caches
+ SQL Interface - DML,DDL, Stored Procedures, Views, Triggers etc
+ Parser - Query Translation, Object Privilege
+ Optimizer - Access Paths, Statistics
+ Caches & Buffers - Global and Engine Specific Caches & Buffers
+
+ Pluggable storage Engines ( Memory, Index & Storage Management)
+  MyISAM, InnoDB, Cluster, Falcon, Archive, Federated, Merge, Memory
+
+ File System
+  NTFS - NFS, SAN - NAS
+
+ Files & Logs
+  Redo, Undo, Data, Index, Binary, Error, Query and Slow
+
+architecture
+dictionary tables
+patching - no pathces for Mariadb
+failover
+migration
+user creation - https://severalnines.com/blog/database-user-management-managing-roles-mariadb/
+tablespace managment - https://dev.mysql.com/doc/refman/8.0/en/create-tablespace.html
+                     - https://dev.mysql.com/doc/refman/5.7/en/alter-tablespace.html
+wait events - https://mariadb.com/kb/en/performance-schema-events_waits_history-table/
+	    - https://dev.mysql.com/doc/mysql-perfschema-excerpt/5.6/en/performance-schema-wait-tables.html
+	    - https://www.techonthenet.com/mariadb/questions/find_users_logged_in.php
+	    - https://dataedo.com/kb/query/mariadb/list-database-sessions
+export/import of table - https://mariadb.com/kb/en/innodb-file-per-table-tablespaces/
